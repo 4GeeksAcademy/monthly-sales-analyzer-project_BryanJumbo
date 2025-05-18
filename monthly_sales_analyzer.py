@@ -24,29 +24,78 @@ sales_data = [
 
 def total_sales_by_product(data, product_key):
     """Calculates the total sales of a specific product in 30 days."""
-    pass
+    total = 0
+    for i in data:
+        total += i.get(product_key)
+    return total
 
 
 def average_daily_sales(data, product_key):
     """Calculates the average daily sales of a specific product."""
-    pass
+    average = total_sales_by_product(data, product_key) / len(data)
+    return average
 
 
 def best_selling_day(data):
     """Finds the day with the highest total sales."""
-    pass
+    best_day = 1
+    best_amount = 0
+    products = ["product_a", "product_b", "product_c"]
+    for item in data:
+        amount = 0
+        for product in products:
+            amount += item.get(product)
+        if amount > best_amount:
+            best_amount = amount
+            best_day = item.get("day")
+    return best_day
 
 
 def days_above_threshold(data, product_key, threshold):
     """Counts how many days the sales of a product exceeded a given threshold."""
-    pass
+    dias = []
+    for item in data:
+        if item.get(product_key) > threshold:
+            dias.append(item.get("day"))
+    return dias
 
 
 def top_product(data):
     """Determines which product had the highest total sales in 30 days."""
-    pass
+    totales = {
+        "product a": total_sales_by_product(data, "product_a"),
+        "product b": total_sales_by_product(data, "product_b"),
+        "product c": total_sales_by_product(data, "product_c")
+    }
+    
+    return max(totales)
 
+def worst_selling_day(data):
+    worst_day = 1
+    worst_amount = 10000
+    products = ["product_a", "product_b", "product_c"]
+    for item in data:
+        amount = 0
+        for product in products:
+            amount += item.get(product)
+        if amount < worst_amount:
+            worst_amount = amount
+            worst_day = item.get("day")
+    return worst_day
 
+def sorted_by_total_sales(data, n):
+    days_sorted = []
+    ordenados = sorted(data, key=lambda x: x["product_a"] + x["product_b"] + x["product_c"], reverse=True)
+    for item in ordenados:
+        days_sorted.append(item["day"])
+    return days_sorted[:n]
+
+def sales_range(data, product_key):
+    ventas = []
+    for item in data:
+        ventas.append(item[product_key])
+    rango = max(ventas) - min(ventas)
+    return rango
 
 # Function tests
 print("Total sales of product_a:", total_sales_by_product(sales_data, "product_a"))
@@ -54,3 +103,7 @@ print("Average daily sales of product_b:", average_daily_sales(sales_data, "prod
 print("Day with highest total sales:", best_selling_day(sales_data))
 print("Days when product_c exceeded 300 sales:", days_above_threshold(sales_data, "product_c", 300))
 print("Product with highest total sales:", top_product(sales_data))
+
+print("Day with lower total sales: ", worst_selling_day(sales_data))
+print("Top 3 best sales days: ", sorted_by_total_sales(sales_data, 3))
+print("The range of the product a is: ", sales_range(sales_data, "product_a"))
